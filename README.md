@@ -16,8 +16,8 @@ Vercel /api/analyze → Groq API → validated AI interpretation
 
 ## How it works
 
-1. The client validates a GitHub URL, reads repository metadata and recursively lists the tree.
-2. It excludes generated folders, dependency folders, locks, binaries, unsupported extensions, and files over 350 KB. A maximum of 420 useful text files is retrieved.
+1. The client validates a GitHub URL and makes two GitHub REST calls only: repository metadata and its file tree.
+2. Supported source files are retrieved from GitHub’s raw-content CDN, not the rate-limited REST API. Generated folders, dependency folders, locks, binaries, unsupported extensions, and files over 350 KB are excluded; a maximum of 420 useful text files is selected.
 3. A Web Worker extracts imports, exports, symbols, language counts, approximate complexity, entry points, and selected security/configuration signals. It resolves local JavaScript/TypeScript import relationships into a graph.
 4. The graph, file explorer, health heuristics, and Impact Simulator use those deterministic facts locally.
 5. If configured, only a size-limited structural digest (not the full repository source) is posted to `/api/analyze` for an AI interpretation. The response is validated before rendering.
