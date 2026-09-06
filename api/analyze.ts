@@ -6,7 +6,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!process.env.GROQ_API_KEY) return res.status(503).json({ error: 'AI review is not configured on this deployment.' });
   const context = req.body?.context;
   if (!context || typeof context !== 'object') return res.status(400).json({ error: 'Missing analysis context.' });
-  // The browser sends only a bounded static-analysis digest, never repository contents by default.
+  
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST', headers: { 'Content-Type':'application/json', Authorization:`Bearer ${process.env.GROQ_API_KEY}` },
